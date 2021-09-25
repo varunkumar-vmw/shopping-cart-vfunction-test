@@ -12,6 +12,7 @@ import com.tanzu.vfunction.dto.CartDTO;
 import com.tanzu.vfunction.dto.CartItemDTO;
 import com.tanzu.vfunction.entity.Cart;
 import com.tanzu.vfunction.entity.CartDetails;
+import com.tanzu.vfunction.entity.Order;
 import com.tanzu.vfunction.repository.CartDetailsRepository;
 import com.tanzu.vfunction.repository.CartRepository;
 
@@ -79,8 +80,8 @@ public class CartService {
 		cartDetailsMap.clear();
 	}
 
-	public void saveCart() {
-		orderService.createOrder(cart.getUserId());
+	public int saveCart() {
+		final Order order = orderService.createOrder(cart.getUserId());
 
 		cartDetailsMap.values().parallelStream().forEach(cartDetail -> {
 			cartDetailsRepository.save(cartDetail);
@@ -88,5 +89,6 @@ public class CartService {
 		});
 
 		orderService.saveOrder();
+		return order.getOrderId();
 	}
 }

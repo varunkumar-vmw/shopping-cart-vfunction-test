@@ -54,8 +54,15 @@ public class UserController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<User> updateUser(@RequestBody final User user) {
+	public ResponseEntity<?> updateUser(@RequestBody final User user) {
 		final boolean isUpdated = userService.updateUser(user);
 		return new ResponseEntity<>(isUpdated ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("deleteall")
+	public ResponseEntity<?> deleteAll() {
+		userService.deleteAll();
+
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

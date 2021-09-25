@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,16 +29,17 @@ public class OrderService {
 	private Order order;
 	private Map<Integer, OrderDetails> orderDetailsMap = new HashMap<>();
 	
-	public void createOrder(final int userId) {
+	public Order createOrder(final int userId) {
 		deleteOrder();
 		order = orderRepository.save(new Order(userId));
+		return order;
 	}
 	
 	public void addOrders(final int productId, final int quantity, final double cost, final double discount) {
 		orderDetailsMap.put(productId, new OrderDetails(order.getOrderId(), productId, quantity, "Pending", getPriceAfterDiscount(cost, discount) * quantity));
 	}
 	
-	public OrderDTO getOrder() throws Exception {
+	public OrderDTO getOrderDTO() throws Exception {
 		if (order == null || orderDetailsMap.size() == 0) {
 			throw new Exception("Order is empty");
 		}
@@ -45,6 +47,10 @@ public class OrderService {
 		final List<OrderDetails> orderDetails = new ArrayList<>();
 		orderDetailsMap.values().parallelStream().forEach(detail -> orderDetails.add(detail));
 		return new OrderDTO(order, orderDetails);
+	}
+	
+	public Optional<Order> getOrder(final int orderId) throws Exception {
+		return orderRepository.findById(orderId);
 	}
 
 	public void removeItemFromOrder(final int productId) {
@@ -67,7 +73,7 @@ public class OrderService {
 		order.setPaymentType("CASH");
 		order.setStatus("Ordered");
 		order.setCost(totalCost[0]);
-		orderRepository.save(order);
+		order = orderRepository.save(order);
 	}
 	
 }

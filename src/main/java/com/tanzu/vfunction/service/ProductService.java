@@ -54,4 +54,8 @@ public class ProductService {
 	public double getCost(final int productId) {
 		return getProduct(productId).get().getPrice();
 	}
+
+	public void deleteAll() {
+		productRepository.deleteAll();	
+	}
 }

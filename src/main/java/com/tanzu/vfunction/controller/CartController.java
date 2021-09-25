@@ -52,13 +52,17 @@ public class CartController {
 
 	@DeleteMapping
 	public ResponseEntity<?> deleteCart() {
-		cartService.deleteCart();
+		try {
+			cartService.deleteCart();
+		} catch (final Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PostMapping("buy")
 	public ResponseEntity<?> saveCart() {
-		cartService.saveCart();
-		return new ResponseEntity<>(HttpStatus.OK);
+		final int orderID = cartService.saveCart();
+		return new ResponseEntity<>(orderID, HttpStatus.OK);
 	}
 }

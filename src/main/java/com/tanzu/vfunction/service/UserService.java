@@ -55,4 +55,8 @@ public class UserService {
 	public boolean isUserExists(final int userId) {
 		return userRepository.findById(userId).isPresent();
 	}
+	
+	public void deleteAll() {
+		userRepository.deleteAll();
+	}
 }

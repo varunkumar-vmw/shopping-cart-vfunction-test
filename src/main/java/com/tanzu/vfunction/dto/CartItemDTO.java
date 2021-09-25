@@ -7,6 +7,18 @@ public class CartItemDTO {
 	private int quantity;
 	private double discount;
 	
+	public CartItemDTO() {
+		
+	}
+	
+	public CartItemDTO(final int userId, final int productId, final int quantity, final double discount) {
+		super();
+		this.userId = userId;
+		this.productId = productId;
+		this.quantity = quantity;
+		this.discount = discount;
+	}
+
 	public int getUserId() {
 		return userId;
 	}

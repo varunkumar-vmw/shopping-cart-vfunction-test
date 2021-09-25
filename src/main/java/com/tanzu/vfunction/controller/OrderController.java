@@ -17,10 +17,10 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
-	@GetMapping
-	public ResponseEntity<?> getOrder() {
+	@GetMapping("{orderid}")
+	public ResponseEntity<?> getOrder(final int orderid) {
 		try {
-			return new ResponseEntity<>(orderService.getOrder(), HttpStatus.OK);
+			return new ResponseEntity<>(orderService.getOrder(orderid), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("No order is created", HttpStatus.NOT_FOUND);
 		}

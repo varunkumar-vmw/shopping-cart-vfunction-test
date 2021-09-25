@@ -59,4 +59,10 @@ public class ProductController {
 		final boolean isUpdated = productService.updateProduct(product);
 		return new ResponseEntity<>(isUpdated ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
+	
+	@GetMapping("deleteall")
+	public ResponseEntity<?> deleteAll() {
+		productService.deleteAll();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
