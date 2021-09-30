@@ -16,20 +16,21 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 
+	@Autowired
+	private LoggerService loggerService;
+
 	public boolean isProductExists(final int productId) {
 		return productRepository.findById(productId).isPresent();
 	}
 
 	public Product addProduct(final ProductDTO product) {
+		loggerService.log("Adding product");
 		return productRepository.save(new Product(product.getProductName(), product.getManufacturer(), product.getPrice()));
 	}
 
 	public void deleteProduct(final int productId) {
-		final Optional<Product> product = getProduct(productId);
-
-		if (product.isPresent()) {
-			productRepository.delete(product.get());
-		}
+		loggerService.log("deleting product " + productId);
+		productRepository.deleteById(productId);
 	}
 
 	public Optional<Product> getProduct(final int productId) {
@@ -41,9 +42,7 @@ public class ProductService {
 	}
 
 	public boolean updateProduct(final Product iProduct) {
-		final Optional<Product> product = getProduct(iProduct.getProductId());
-
-		if (product.isPresent()) {
+		if (productRepository.existsById(iProduct.getProductId())) {
 			productRepository.save(iProduct);
 			return true;
 		}

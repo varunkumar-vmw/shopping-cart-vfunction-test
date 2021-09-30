@@ -31,6 +31,9 @@ public class CartService {
 	@Autowired
 	private SharedService sharedService;
 
+	@Autowired
+	private LoggerService loggerService;
+
 	private Cart cart;
 	private Map<Integer, CartDetails> cartDetailsMap = new HashMap<>();
 
@@ -42,6 +45,7 @@ public class CartService {
 	}
 
 	public void addItemsToCart(final CartItemDTO cartItemDTO) throws Exception {
+		loggerService.log("Adding Item to cart");
 		if ( ! sharedService.isUserExists(cartItemDTO.getUserId())) {
 			throw new Exception("User not found");
 		}
@@ -72,10 +76,12 @@ public class CartService {
 	}
 
 	public void removeItemFromCart(final int productId) {
+		loggerService.log("Removing Item to cart");
 		cartDetailsMap.remove(productId);
 	}
 
 	public void deleteCart() {
+		loggerService.log("Deleting cart");
 		cart = null;
 		cartDetailsMap.clear();
 	}

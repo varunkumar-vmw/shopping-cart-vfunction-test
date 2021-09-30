@@ -26,10 +26,14 @@ public class OrderService {
 	@Autowired
 	private OrderDetailsRepository orderDetailsRepository;
 
+	@Autowired
+	private LoggerService loggerService;
+
 	private Order order;
 	private Map<Integer, OrderDetails> orderDetailsMap = new HashMap<>();
 	
 	public Order createOrder(final int userId) {
+		loggerService.log("Create new order");
 		deleteOrder();
 		order = orderRepository.save(new Order(userId));
 		return order;
@@ -50,6 +54,7 @@ public class OrderService {
 	}
 	
 	public Optional<Order> getOrder(final int orderId) throws Exception {
+		loggerService.log("Get order for id "+ orderId);
 		return orderRepository.findById(orderId);
 	}
 

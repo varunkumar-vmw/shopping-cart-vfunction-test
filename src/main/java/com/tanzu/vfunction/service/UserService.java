@@ -16,7 +16,11 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private LoggerService loggerService;
+
 	public User addUser(final UserDTO userDTO) {
+		loggerService.log("Adding User");
 		final User user = new User();
 		user.setAddress(userDTO.getAddress());
 		user.setName(userDTO.getName());
@@ -28,6 +32,7 @@ public class UserService {
 	}
 
 	public void deleteUser(final int userId) {
+		loggerService.log("Deleting User");
 		final Optional<User> user = getUser(userId);
 		if (user.isPresent()) {
 			userRepository.delete(user.get());
